@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR Try-On Experience - IntelliNova</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* Ensures AR content starts below the standard fixed header */
+        .ar-container-wrapper {
+            padding-top: 20px; 
+        }
+        /* Styling adjustment for the AR button section */
+        .ar-controls {
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.7); /* Slightly darker for contrast */
+            width: 100%;
+            text-align: center;
+            z-index: 30;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav id="main-nav"> 
+            <!-- Navigation populated by script.js -->
+        </nav>
+    </header>
+
+    <div class="container ar-container-wrapper">
+        <h2 class="section-title">👕 Virtual Try-On Experience</h2>
+        <p style="text-align: center; margin-bottom: 20px;">Use the control panel below to select and overlay your product in real-time environment simulation.</p>
+        
+        <div class="ar-mock-container" style="margin-top: 0;">
+            <div class="ar-status-text">Initializing AR Engine...</div>
+            
+            <img src="https://via.placeholder.com/300x400/007bff/FFFFFF?text=AR+Shirt+Overlay" 
+                 alt="Virtual Product Overlay" 
+                 class="static-overlay" 
+                 id="ar-overlay-image">
+
+            <div class="camera-frame-ui">
+                <span style="color: white; font-size: 1.5rem;">[Live View Simulation]</span>
+            </div>
+
+            <div class="ar-controls">
+                <select id="ar-item-select" style="margin-right: 10px; padding: 10px; border-radius: 5px;">
+                    <option value="shirt">Select Shirt (Apparel)</option>
+                    <option value="shoes">Select Shoes (Footwear)</option>
+                </select>
+                <button class="btn btn-primary" id="try-on-btn" onclick="toggleARMock()">Start Virtual Try-On</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        function toggleARMock() {
+            const overlay = document.getElementById('ar-overlay-image');
+            const statusText = document.querySelector('.ar-status-text');
+            const select = document.getElementById('ar-item-select');
+            const item = select.value;
+            const tryOnBtn = document.getElementById('try-on-btn');
+
+            if (overlay.style.opacity === '0.9') {
+                // Hiding
+                overlay.style.opacity = '0';
+                statusText.textContent = "Click 'Start Virtual Try-On' to load a product.";
+                tryOnBtn.textContent = 'Start Virtual Try-On';
+                tryOnBtn.style.backgroundColor = '#007bff';
+            } else {
+                // Showing/Loading
+                let src, text;
+                if (item === 'shirt') {
+                    src = 'https://via.placeholder.com/300x400/007bff/FFFFFF?text=Blue+Shirt+3D+Model';
+                    text = 'AR Model: Blue T-Shirt augmented.';
+                } else if (item === 'shoes') {
+                    src = 'https://via.placeholder.com/300x200/28a745/FFFFFF?text=Green+Sneaker+3D+Model';
+                    text = 'AR Model: Green Sneakers augmented.';
+                }
+                
+                overlay.src = src;
+                overlay.style.opacity = '0';
+                tryOnBtn.textContent = 'Stop Try-On';
+                tryOnBtn.style.backgroundColor = '#dc3545'; // Change button color when active
+                
+                setTimeout(() => {
+                    statusText.textContent = "Augmenting model...";
+                    setTimeout(() => {
+                        overlay.style.transition = 'opacity 0.5s';
+                        overlay.style.opacity = '0.9';
+                        statusText.textContent = text;
+                    }, 1000);
+                }, 100);
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('ar-overlay-image').style.opacity = '0'; // Start hidden
+            document.querySelector('.ar-status-text').textContent = "Click 'Start Virtual Try-On' to load a product.";
+        });
+    </script>
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 IntelliNova AI Shopping Assistant</p>
+        
+            <div class="team-list">
+                <p>🤖👩‍💻Built by Team:</p>
+                <ul>
+                    <li>Bhumika Bijlwan: <a href="mailto:lco23387@ccet.ac.in">lco23387@ccet.ac.in</a></li>
+                    <li>Harshita Sharma: <a href="mailto:mco23378@ccet.ac.in">mco23378@ccet.ac.in</a></li>
+                    <li>Simar Atwal: <a href="mailto:mco23384@ccet.ac.in">mco23386@ccet.ac.in</a></li>
+                </ul>
+            </div>
+        
+            <div class="footer-links" style="margin-top: 15px;">
+                <a href="profile.html">My Account</a> |
+                <a href="index.html">Home</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
